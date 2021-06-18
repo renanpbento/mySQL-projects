@@ -15,7 +15,7 @@ USE mavenfuzzyfactory;
 
 CREATE TEMPORARY TABLE sessions_min_pv
 SELECT
-	ws.website_session_id,
+    ws.website_session_id,
     MIN(wp.website_pageview_id) AS first_pageview_id,
     COUNT(wp.website_pageview_id) AS count_pageviews
 FROM website_sessions ws
@@ -29,7 +29,7 @@ GROUP BY
 
 CREATE TEMPORARY TABLE sessions_with_counts_lander
 SELECT
-	smp.website_session_id,
+    smp.website_session_id,
     smp.first_pageview_id,
     smp.count_pageviews,
     wp.pageview_url AS landing_page,
@@ -38,10 +38,10 @@ FROM sessions_min_pv smp
 LEFT JOIN website_pageviews wp ON smp.first_pageview_id = wp.website_pageview_id;
 
 SELECT
-	MIN(DATE(sessions_created_at)) AS week_start_date,
+    MIN(DATE(sessions_created_at)) AS week_start_date,
     ROUND((COUNT(DISTINCT CASE WHEN count_pageviews = 1 THEN website_session_id ELSE NULL END)*1.0/COUNT(DISTINCT website_session_id))*100,2) AS bounce_rate,
     COUNT(DISTINCT CASE WHEN landing_page = '/home' THEN website_session_id ELSE NULL END) AS home_sessions,
     COUNT(DISTINCT CASE WHEN landing_page = '/lander-1' THEN website_session_id ELSE NULL END) AS lander_sessions
 FROM sessions_with_counts_lander scl
 GROUP BY
-	YEARWEEK(sessions_created_at);
+    YEARWEEK(sessions_created_at);
