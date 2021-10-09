@@ -12,15 +12,15 @@ USE mavenfuzzyfactory;
 total revenue and total margin generated for the business?*/
 
 SELECT
-	YEAR(created_at) AS 'year',
+    YEAR(created_at) AS 'year',
     MONTH(created_at) AS 'month',
     COUNT(DISTINCT order_id) AS sales,
-	ROUND(SUM(price_usd),2) AS 'total_revenue',
+    ROUND(SUM(price_usd),2) AS 'total_revenue',
     ROUND(SUM(price_usd - cogs_usd),2) AS 'total_margin'
 FROM orders
 WHERE
-	created_at < '2013-01-04'
+    created_at < '2013-01-04'
 GROUP BY
-	month
+    month
 ORDER BY
-	1,2;
+    1,2;
